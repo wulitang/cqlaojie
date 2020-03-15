@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>重庆老街</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="wap-font-scale" content="no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="keywords" content="重庆老街">
+    <meta name="description" content="重庆老街">
+    <meta name="wap-font-scale" content="no">
+    <!-- 在 head 标签中添加 meta 标签，并设置 viewport-fit=cover 值 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+    <!-- 引入样式文件 -->
+    <link rel="stylesheet" href="css/vant@2.5/index.css">
+    <link rel="stylesheet" href="css/common.css">
+    <!-- 引入 Vue 和 Vant 的 JS 文件 -->
+    <script src="js/vue.min.js"></script>
+    <script src="js/vant@2.5/vant.min.js"></script>
+    <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>
+    <style type="text/css">
+    .login-from{
+        background-image: url('image/logo.png');
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 1rem;
+        height: 1rem;
+        display: none;
+    }
+    .user-infor{
+        font-size: .14rem;
+    }
+    .van-nav-bar__title{
+        color: #fff;
+    }
+    .van-nav-bar{
+        background-color: #ac7171;
+    }
+    .user-pic{
+        width: 1rem;
+        border-radius: 50%;
+    }
+    .user-name{
+        color: #040404;
+        font-weight: 700;
+    }
+    .user-desc{
+        color: #696868;
+    }
+    .request-from{
+        font-size: .14rem;
+        margin: 0 0.4rem;
+    }
+    .van-radio__icon{
+        float: left;
+    }
+    .van-radio{
+        width: 20%;
+        display: inline-block;
+    }
+    #app{
+        background-image: url('image/request.jpg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+    }
+    .van-cell{
+        border: 1px solid #ebedf0;
+    }
+    .title{
+        margin: .2rem 0;
+    }
+    .request-from .van-col{
+        height: .6rem;
+        line-height: .6rem;
+    }
+    .choose{
+        background-color: #804640;
+        color: #fff;
+    }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <van-nav-bar title="认养文物巡查表"></van-nav-bar>
+        <van-row style="margin: 0.17rem;border-bottom: 1px solid #ebedf0;">
+            <van-col span="4" style="text-align: center;">
+                <img class="user-pic" src="image/logo.png" alt="">
+            </van-col>
+            <van-col span="14">
+                <div class="user-infor">
+                    <div class="user-name"> 李大发 </div>
+                    <div class="user-desc"> 积分：1314 </div>
+                </div>
+            </van-col>
+            <van-col span="6" style="text-align: center;">
+                <!-- <van-button color="#ac7171" size="small" type="default">提交</van-button> -->
+            </van-col>
+        </van-row>
+        <ul class="request-from">
+            <li>
+                <van-row style="text-align: center;border: 1px solid #80463f;">
+                    <van-col class="choose" span="12">已认养文物</van-col>
+                    <van-col span="12">未认养文物</van-col>
+                </van-row>
+            </li>
+            <li>
+                <div class="title">1. 选择需要巡查的文物 <em>*</em></div>
+                <!-- <van-area confirm :area-list="areaList" :columns-num="1" title="选择文物" /> -->
+            </li>
+            <li>
+                <div class="title">2.是否存在私拉乱接电线现象 <em>*</em></div>
+                <van-radio-group v-model="radio">
+                    <van-radio name="1" checked-color="#07c160">是</van-radio>
+                    <van-radio name="2" checked-color="#07c160">否</van-radio>
+                </van-radio-group>
+            </li>
+            <li>
+                <div class="title">3.是否存在违规使用明火现象 <em>*</em></div>
+                <van-radio-group v-model="radio">
+                    <van-radio name="1" checked-color="#07c160">是</van-radio>
+                    <van-radio name="2" checked-color="#07c160">否</van-radio>
+                </van-radio-group>
+            </li>
+            <li>
+                <div class="title">4.是否配备了灭火器材（灭火器材是否过期） <em>*</em></div>
+                <van-radio-group v-model="radio">
+                    <van-radio name="1" checked-color="#07c160">是</van-radio>
+                    <van-radio name="2" checked-color="#07c160">否</van-radio>
+                </van-radio-group>
+            </li>
+            <li>
+                <div class="title">5.安全出口、消防通道是否畅通<em>*</em></div>
+                <van-radio-group v-model="radio">
+                    <van-radio name="1" checked-color="#07c160">是</van-radio>
+                    <van-radio name="2" checked-color="#07c160">否</van-radio>
+                </van-radio-group>
+            </li>
+            <li>
+                <div class="title">6.是否存在乱堆乱放易燃易爆物品 <em>*</em></div>
+                <van-radio-group v-model="radio">
+                    <van-radio name="1" checked-color="#07c160">是</van-radio>
+                    <van-radio name="2" checked-color="#07c160">否</van-radio>
+                </van-radio-group>
+            </li>
+            <li>
+                <div class="title">7.是否存在破坏、损毁、迁移、拆除文物保护标志、防护设施等行为（包括自然和人为） <em>*</em></div>
+                <van-radio-group v-model="radio">
+                    <van-radio name="1" checked-color="#07c160">是</van-radio>
+                    <van-radio name="2" checked-color="#07c160">否</van-radio>
+                </van-radio-group>
+            </li>
+            <li>
+                <div class="title">8.文物是否存在破坏情况 <em>*</em></div>
+                <van-radio-group v-model="radio">
+                    <van-radio name="1" checked-color="#07c160">是</van-radio>
+                    <van-radio name="2" checked-color="#07c160">否</van-radio>
+                </van-radio-group>
+            </li>
+            <li>
+                <div class="title">9.正常情况图片上传</div>
+                <van-radio-group v-model="radio">
+                    <van-radio name="1" checked-color="#07c160">是</van-radio>
+                    <van-radio name="2" checked-color="#07c160">否</van-radio>
+                </van-radio-group>
+            </li>
+            <li>
+                <div class="title">9-1 带有时间水印的图片</div>
+                <van-uploader :max-count="1" v-model="fileList" multiple />
+            </li>
+            <li>
+                <div class="title">9-2 全景图片</div>
+                <van-uploader :max-count="2" v-model="fileList" multiple />
+            </li>
+            <li>
+                <div class="title">9-3 特色局部照片</div>
+                <van-uploader :max-count="3" v-model="fileList" multiple />
+            </li>
+            <li>
+                <div class="title">10.破坏情况描述</div>
+                <van-field
+                    v-model="message"
+                    rows="3"
+                    autosize
+                    type="textarea"
+                    placeholder="请输入留言"
+                />
+            </li>
+            <li>
+                <div class="title">10-1 带有时间水印的图片</div>
+                <van-uploader :max-count="1" v-model="fileList" multiple />
+            </li>
+            <li>
+                <div class="title">10-2 全景图片</div>
+                <van-uploader :max-count="2" v-model="fileList" multiple />
+            </li>
+            <li>
+                <div class="title">10-3 特色局部照片</div>
+                <van-uploader :max-count="3" v-model="fileList" multiple />
+            </li>
+
+        </ul>
+        <div style="margin: 16px 30px 50px 30px;">
+            <van-button color="#ac7171" block type="primary" >提交</van-button>
+        </div>
+    </div>
+    <script>
+        // 在 #app 标签下渲染一个按钮组件
+        new Vue({
+            el: '#app',
+            data:{
+                fileList: [],
+                message:'',
+                radio:'',
+                areaList:{
+                    province_list: {
+                        110000: '北京市',
+                        120000: '天津市'
+                    }
+                }
+            },
+            methods: {
+                afterRead(file) {
+                // 此时可以自行将文件上传至服务器
+                console.log(file);
+                },
+                confirm(){
+                    console.log(1111);
+                }
+            },
+        });
+        </script>
+</body>
+</html>
