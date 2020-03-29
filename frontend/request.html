@@ -84,6 +84,11 @@
         background-color: #804640;
         color: #fff;
     }
+    .select-wenwu .van-cell{
+        padding: 0 10px;
+        font-size: 12px;
+        border-radius: 5px;
+    }
     </style>
 </head>
 <body>
@@ -103,89 +108,97 @@
                 <!-- <van-button color="#ac7171" size="small" type="default">提交</van-button> -->
             </van-col>
         </van-row>
-        <ul class="request-from">
-            <li>
-                <van-row style="text-align: center;border: 1px solid #80463f;">
-                    <van-col class="choose" span="12">已认养文物</van-col>
-                    <van-col span="12">未认养文物</van-col>
-                </van-row>
-            </li>
+        <ul class="request-from" ref="request">
+        <li>
+            <van-row style="text-align: center;border: 1px solid #80463f;">
+                <van-col :class="[from.witch == 1 ? 'choose' : '']" @click="choose(1)" span="12">
+                    已认养文物
+                </van-col>
+                <van-col :class="[from.witch == 2 ? 'choose' : '']" @click="choose(2)" span="12">
+                    未认养文物
+                </van-col>
+            </van-row>
+        </li>
             <li>
                 <div class="title">1. 选择需要巡查的文物 <em>*</em></div>
-                <!-- <van-area confirm :area-list="areaList" :columns-num="1" title="选择文物" /> -->
+                <div class="select-wenwu">
+                    <van-cell is-link @click="showPopup">
+                        {{witchOne}}
+                    </van-cell>
+                </div>
             </li>
             <li>
                 <div class="title">2.是否存在私拉乱接电线现象 <em>*</em></div>
-                <van-radio-group v-model="radio">
+                <van-radio-group v-model="from.lineRadio">
                     <van-radio name="1" checked-color="#07c160">是</van-radio>
                     <van-radio name="2" checked-color="#07c160">否</van-radio>
                 </van-radio-group>
             </li>
             <li>
                 <div class="title">3.是否存在违规使用明火现象 <em>*</em></div>
-                <van-radio-group v-model="radio">
+                <van-radio-group v-model="from.fireRadio">
                     <van-radio name="1" checked-color="#07c160">是</van-radio>
                     <van-radio name="2" checked-color="#07c160">否</van-radio>
                 </van-radio-group>
             </li>
             <li>
                 <div class="title">4.是否配备了灭火器材（灭火器材是否过期） <em>*</em></div>
-                <van-radio-group v-model="radio">
+                <van-radio-group v-model="from.extinguisheRadio">
                     <van-radio name="1" checked-color="#07c160">是</van-radio>
                     <van-radio name="2" checked-color="#07c160">否</van-radio>
                 </van-radio-group>
             </li>
             <li>
                 <div class="title">5.安全出口、消防通道是否畅通<em>*</em></div>
-                <van-radio-group v-model="radio">
+                <van-radio-group v-model="from.exitRadio">
                     <van-radio name="1" checked-color="#07c160">是</van-radio>
                     <van-radio name="2" checked-color="#07c160">否</van-radio>
                 </van-radio-group>
             </li>
             <li>
                 <div class="title">6.是否存在乱堆乱放易燃易爆物品 <em>*</em></div>
-                <van-radio-group v-model="radio">
+                <van-radio-group v-model="from.fireworksRadio">
                     <van-radio name="1" checked-color="#07c160">是</van-radio>
                     <van-radio name="2" checked-color="#07c160">否</van-radio>
                 </van-radio-group>
             </li>
             <li>
                 <div class="title">7.是否存在破坏、损毁、迁移、拆除文物保护标志、防护设施等行为（包括自然和人为） <em>*</em></div>
-                <van-radio-group v-model="radio">
+                <van-radio-group v-model="from.behaviorRadio">
                     <van-radio name="1" checked-color="#07c160">是</van-radio>
                     <van-radio name="2" checked-color="#07c160">否</van-radio>
                 </van-radio-group>
             </li>
             <li>
                 <div class="title">8.文物是否存在破坏情况 <em>*</em></div>
-                <van-radio-group v-model="radio">
+                <van-radio-group v-model="from.destroyRadio">
                     <van-radio name="1" checked-color="#07c160">是</van-radio>
                     <van-radio name="2" checked-color="#07c160">否</van-radio>
                 </van-radio-group>
             </li>
             <li>
                 <div class="title">9.正常情况图片上传</div>
-                <van-radio-group v-model="radio">
+                <van-radio-group v-model="from.normalRadio">
                     <van-radio name="1" checked-color="#07c160">是</van-radio>
                     <van-radio name="2" checked-color="#07c160">否</van-radio>
                 </van-radio-group>
             </li>
             <li>
                 <div class="title">9-1 带有时间水印的图片</div>
-                <van-uploader :max-count="1" v-model="fileList" multiple />
+                <van-uploader :max-count="1" v-model="from.timeFileList" multiple />
             </li>
             <li>
                 <div class="title">9-2 全景图片</div>
-                <van-uploader :max-count="2" v-model="fileList" multiple />
+                <van-uploader :max-count="2" v-model="from.allFileList" multiple />
             </li>
             <li>
                 <div class="title">9-3 特色局部照片</div>
-                <van-uploader :max-count="3" v-model="fileList" multiple />
+                <van-uploader :max-count="3" v-model="from.partFileList" multiple />
             </li>
             <li>
                 <div class="title">10.破坏情况描述</div>
                 <van-field
-                    v-model="message"
+                    v-model="from.destroyMessage"
                     rows="3"
                     autosize
                     type="textarea"
@@ -194,45 +207,88 @@
             </li>
             <li>
                 <div class="title">10-1 带有时间水印的图片</div>
-                <van-uploader :max-count="1" v-model="fileList" multiple />
+                <van-uploader :max-count="1" v-model="from.errofileList1" multiple />
             </li>
             <li>
                 <div class="title">10-2 全景图片</div>
-                <van-uploader :max-count="2" v-model="fileList" multiple />
+                <van-uploader :max-count="2" v-model="from.errofileList2" multiple />
             </li>
             <li>
                 <div class="title">10-3 特色局部照片</div>
-                <van-uploader :max-count="3" v-model="fileList" multiple />
+                <van-uploader :max-count="3" v-model="from.errofileList3" multiple />
             </li>
 
         </ul>
         <div style="margin: 16px 30px 50px 30px;">
-            <van-button color="#ac7171" block type="primary" >提交</van-button>
+            <van-button color="#ac7171" style="width: 100%;" @click="submitFrom" type="primary" >提交</van-button>
         </div>
+        <!---选择弹窗--->
+        <van-popup v-model="show"
+            position="bottom"
+            closeable
+            :style="{ height: '30%' }"
+            >
+            <van-picker :columns="selecColumns" @change="onChange" />
+        </van-popup>
     </div>
+    
     <script>
         // 在 #app 标签下渲染一个按钮组件
         new Vue({
             el: '#app',
             data:{
-                fileList: [],
+                from:{
+                    witch:1,// 选择认养文物和未认养文物 1认养 2为认养
+                    lineRadio:"",//电线选项
+                    fireRadio:"",//
+                    extinguisheRadio:"",//灭火器材选项
+                    exitRadio:"",//消防通道选项
+                    fireworksRadio:"",//易燃易爆选项
+                    behaviorRadio:"",//破坏行为选项
+                    destroyRadio:"",
+                    normalRadio:"",//正常图片选项
+                    timeFileList:[],//带时间图片选项
+                    allFileList:[],//全景图片选项
+                    partFileList:[],//局部图片选项
+                    destroyMessage:'',//破坏描述
+                    partFileList:[],//局部图片选项
+                    errofileList1: [],
+                    errofileList2: [],
+                    errofileList3: [],
+                },
                 message:'',
                 radio:'',
-                areaList:{
-                    province_list: {
-                        110000: '北京市',
-                        120000: '天津市'
-                    }
-                }
+                witchOne:'请选择巡查文物',//选择哪个文物
+                show:false,
+                selecColumns:[],//初始化选择文物列表
+                columns: ['1杭州', '1宁波', '1温州', '1嘉兴', '1湖州'],
+                otherColumns: ['2杭州', '2宁波', '2温州', '2嘉兴', '2湖州'],
             },
             methods: {
-                afterRead(file) {
-                // 此时可以自行将文件上传至服务器
-                console.log(file);
+                choose(data){
+                    console.log(1111);
+                    this.witch =data;
+                },
+                // afterRead(file) {
+                //     // 此时可以自行将文件上传至服务器
+                //     console.log(file);
+                // },
+                showPopup() {
+                    this.show = true;
+                },
+                onChange(picker, value, index) {
+                    this.witchOne = value
+                    console.log(`当前值：${value}, 当前索引：${index}`);
                 },
                 confirm(){
                     console.log(1111);
-                }
+                },
+                submitFrom() {
+                    console.log(this.from);
+                },
+            },
+            created(){
+                this.selecColumns = this.columns;//异步请求获取认养文物列表
             },
         });
         </script>
